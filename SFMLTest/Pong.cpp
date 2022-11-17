@@ -19,12 +19,21 @@ void Pong::update() {	//Updates position based on velocity
 	pong.setPosition(x, y);
 };
 
-void Pong::reset() {	//Resets to the middle; might change it later to do different things depending on who scores
-	x = 390.f;
-	y = 280.f;
-	velx = -.05f;
-	vely = .05f;
-	pong.setPosition(x, y);
+void Pong::reset(int scored) {	//Resets to the middle; might change it later to do different things depending on who scores
+	if (scored == 0) {
+		x = 390.f;
+		y = 280.f;
+		velx = -.05f;
+		vely = .05f;
+		pong.setPosition(x, y);
+	}
+	else {
+		x = 390.f;
+		y = 280.f;
+		velx = .05f;
+		vely = .05f;
+		pong.setPosition(x, y);
+	}
 };
 
 void Pong::checkBounds(int& score) {
@@ -41,7 +50,12 @@ void Pong::checkBounds(int& score) {
 		}
 	}
 	if (m_bounds.left < -5 || m_bounds.left > 800) {	//Resets score and pong if either player or opponent scores
-		reset();
+		if (m_bounds.left < -5) {
+			reset(0);	//If opponent scores pong goes toward player
+		}
+		else {
+			reset(1);	//If player scores pong goes toward opponent
+		}
 		score = 1;
 	}
 };
